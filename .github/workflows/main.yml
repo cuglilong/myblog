@@ -46,7 +46,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source-directory: "public"
+          source-directory: "../../public"
           destination-github-username: "cuglilong"
           destination-repository-name: "cuglilong.github.io"
           user-email: cuglilong@cug.edu.cn
