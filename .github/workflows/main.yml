@@ -15,7 +15,7 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }} # secret 中设置好私钥
+          deploy_key: ${{ secrets.API_TOKEN_GITHUB }} # secret 中设置好私钥
           external_repository: cuglilong/cuglilong.github.io  # Page 仓库
           publish_branch: main  # Page 仓库的分支
           publish_dir: ./public # 静态网页路径
