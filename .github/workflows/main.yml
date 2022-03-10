@@ -1,6 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+name: github pages # 名字自取
 
 # Controls when the action will run.
 on:
@@ -10,43 +8,29 @@ on:
   pull_request:
     branches: [master]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+  deploy: # 任务名自取
+    runs-on: ubuntu-18.04	# 在什么环境运行任务
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-        #with:
-        #  submodules: true # Fetch Hugo themes (true OR recursive)
-        #  fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
-
-      - name: Hugo setup
-        # You may pin to the exact commit or the version.
-        # uses: peaceiris/actions-hugo@2e89aa66d0093e4cd14751b3028fc1a179452c2e
-        uses: peaceiris/actions-hugo@v2.4.13
+      - uses: actions/checkout@v2	# 引用actions/checkout这个action，与所在的github仓库同名
         with:
-          # The Hugo version to download (if necessary) and use. Example: 0.58.2
-          hugo-version: latest # optional, default is latest
-          # Download (if necessary) and use Hugo extended version. Example: true
-          extended: true # optional, default is false
+          submodules: true  # Fetch Hugo themes (true OR recursive) 获取submodule主题
+          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+
+      - name: Setup Hugo	# 步骤名自取
+        uses: peaceiris/actions-hugo@v2	# hugo官方提供的action，用于在任务环境中获取hugo
+        with:
+          hugo-version: 'latest'	# 获取最新版本的hugo
+          # extended: true
 
       - name: Build
-        run: hugo
+        run: hugo --minify	# 使用hugo构建静态网页
 
-      - name: Pushes to another repository
-        uses: cpina/github-action-push-to-another-repository@master
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3	# 一个自动发布github pages的action
         with:
-          source-directory: "public"
-          destination-github-username: "cuglilong"
-          destination-repository-name: "cuglilong.github.io"
-          user-email: cuglilong@cug.edu.cn
+          # github_token: ${{ secrets.GITHUB_TOKEN }} 该项适用于发布到源码相同repo的情况，不能用于发布到其他repo
+          external_repository: cuglilong/cuglilong.github.io	# 发布到哪个repo
+          personal_token: ${{ secrets.ACTION_ACCESS_TOKEN }}	# 发布到其他repo需要提供上面生成的personal access token
+          publish_dir: ./public	# 注意这里指的是要发布哪个文件夹的内容，而不是指发布到目的仓库的什么位置，因为hugo默认生成静态网页到public文件夹，所以这里发布public文件夹里的内容
+          publish_branch: main	# 发布到哪个branch
