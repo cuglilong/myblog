@@ -1,23 +1,52 @@
-name: Auto Deploy hugo
-on: [push]
-jobs:
-  Explore-GitHub-Actions:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: latest
-      - name: Build 
-        run: hugo
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          deploy_key: ${{ secrets.API_TOKEN_GITHUB }} # secret 中设置好私钥
-          external_repository: cuglilong/cuglilong.github.io  # Page 仓库
-          publish_branch: main  # Page 仓库的分支
-          publish_dir: ./public # 静态网页路径
-          commit_message: ${{ github.event.head_commit.message }}
+# This is a basic workflow to help you get started with Actions
 
+name: CI
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        #with:
+        #  submodules: true # Fetch Hugo themes (true OR recursive)
+        #  fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
+
+      - name: Hugo setup
+        # You may pin to the exact commit or the version.
+        # uses: peaceiris/actions-hugo@2e89aa66d0093e4cd14751b3028fc1a179452c2e
+        uses: peaceiris/actions-hugo@v2.4.13
+        with:
+          # The Hugo version to download (if necessary) and use. Example: 0.58.2
+          hugo-version: latest # optional, default is latest
+          # Download (if necessary) and use Hugo extended version. Example: true
+          extended: true # optional, default is false
+
+      - name: Build
+        run: hugo
+
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@master
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: "public"
+          destination-github-username: "cuglilong"
+          destination-repository-name: "cuglilong.github.io"
+          user-email: cuglilong@cug.edu.cn
