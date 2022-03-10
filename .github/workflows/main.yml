@@ -11,9 +11,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2	# 引用actions/checkout这个action，与所在的github仓库同名
-        with:
-          submodules: true
-          fetch-depth: 0
+        #with:
+        #  submodules: true
+        #  fetch-depth: 0
 
       - name: Setup Hugo	# 步骤名自取
         uses: peaceiris/actions-hugo@v2	# hugo官方提供的action，用于在任务环境中获取hugo
