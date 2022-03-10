@@ -41,6 +41,44 @@ seo:
 
 #### 1.博客源文件与静态部署文件的区别
 
+- 博客源文件：
+
+  - 本地位置
+  ```shell
+  (base) ╭─ucaslilong@Long-Mac ~/Documents/myblog ‹master●› 
+  ╰─$pwd                                                         
+  /Users/ucaslilong/Documents/myblog
+  (base) ╭─ucaslilong@Long-Mac ~/Documents/myblog ‹master●› 
+  ╰─$ tree -L 1
+  .
+  ├── archetypes
+  ├── blogpirture
+  ├── config.toml
+  ├── content
+  ├── data
+  ├── layouts
+  ├── public
+  ├── resources
+  ├── static
+  └── themes
+
+  9 directories, 1 file
+  ```
+  - Github位置
+  [https://github.com/cuglilong/myblog](https://github.com/cuglilong/myblog)
+
+
+- 博客静态网站文件:
+
+    -  本地位置
+
+    ```shell
+  /Users/ucaslilong/Documents/myblog/public
+    ```
+
+    - Github位置
+    [https://github.com/cuglilong/cuglilong.github.io](https://github.com/cuglilong/cuglilong.github.io)
+
 #### 2.日常操作
 
 - 写博客
@@ -112,3 +150,38 @@ Branch 'master' set up to track remote branch 'master' from 'origin'.
 ```
 
 - 备份博客源文件
+```shell
+(base) ╭─ucaslilong@Long-Mac ~/Documents/myblog/public ‹master› 
+╰─$ pwd      
+/Users/ucaslilong/Documents/myblog/public
+(base) ╭─ucaslilong@Long-Mac ~/Documents/myblog/public ‹master› 
+╰─$ cd ..    
+(base) ╭─ucaslilong@Long-Mac ~/Documents/myblog ‹master●› 
+╰─$ ls
+archetypes  config.toml data        public      static
+blogpirture content     layouts     resources   themes
+(base) ╭─ucaslilong@Long-Mac ~/Documents/myblog ‹master●› 
+╰─$ git remote rm origin                                                  
+(base) ╭─ucaslilong@Long-Mac ~/Documents/myblog ‹master●› 
+╰─$ git remote add origin git@github.com:cuglilong/myblog.git             
+(base) ╭─ucaslilong@Long-Mac ~/Documents/myblog ‹master●› 
+╰─$ git add .                                                
+(base) ╭─ucaslilong@Long-Mac ~/Documents/myblog ‹master●› 
+╰─$ git commit -m "upload blog source"
+[master 5f4305b] upload blog source
+ 2 files changed, 116 insertions(+), 2 deletions(-)
+ create mode 100644 content/posts/2022-03-10-about-blog.md
+ rename content/posts/{2022-03-10-learn-html.md => 2022-03-10-example-blog.md} (88%)
+(base) ╭─ucaslilong@Long-Mac ~/Documents/myblog ‹master› 
+╰─$ git push -u origin master         
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (6/6), 1.79 KiB | 1.79 MiB/s, done.
+Total 6 (delta 4), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (4/4), completed with 3 local objects.
+To github.com:cuglilong/myblog.git
+   fb63b88..5f4305b  master -> master
+Branch 'master' set up to track remote branch 'master' from 'origin'.
+```
